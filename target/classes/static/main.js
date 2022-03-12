@@ -2,7 +2,7 @@
 
 function getUsers() {
 
-    fetch("http://localhost:8080/api/admin/getAllUsers")
+    fetch("http://localhost:8080/admin/users")
         .then((res) => res.json())
         .then((data) => {
             let temp = "";
@@ -33,7 +33,7 @@ getUsers()
 //------------------fillModals--------------------------------
 
 function fillModal(id) {
-    fetch("http://localhost:8080/api/admin/getUserById/" + id, {
+    fetch("http://localhost:8080/admin/" + id, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ function fillModal(id) {
 
 function showUser() {
     //$("#topNav").css("display", "none");
-    const showUserURL = 'http://localhost:8080/api/admin/showUserByUsername';
+    const showUserURL = 'http://localhost:8080/admin/user';
     fetch(showUserURL)
         .then((res) => res.json())
         .then((user) => {
@@ -92,7 +92,7 @@ function newUserForm(e){
     let roles = selectRole(Array.from(document.getElementById("addRole").selectedOptions)
         .map(r => r.value));
 
-    fetch("http://localhost:8080/api/admin/create", {
+    fetch("http://localhost:8080/admin/add", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -112,7 +112,10 @@ function newUserForm(e){
             document.getElementById("newUserForm").reset();
         })
 }
-
+async function getUser(id){
+    let response = await fetch(url + '/' + id);
+    return await response.json();
+}
 //------------------EDIT--------------------------------
 
 function butEdit() {
@@ -127,7 +130,7 @@ function butEdit() {
             .map(r => r.value))
     }
 
-    fetch("http://localhost:8080/api/admin/update", {
+    fetch("http://localhost:8080/admin/update", {
         method: "PUT",
         headers: {
             'Accept': 'application/json',
@@ -155,7 +158,7 @@ function selectRole(r) {
 //------------------DELETE--------------------------------
 
 function butDelete() {
-    fetch("http://localhost:8080/api/admin/delete/" + document.getElementById('delId').value, {
+    fetch("http://localhost:8080/admin/" + document.getElementById('delId').value, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -175,4 +178,5 @@ function reTable() {
     //     table.deleteRow(1);
     // }
     setTimeout(getUsers, 140)
+
 }

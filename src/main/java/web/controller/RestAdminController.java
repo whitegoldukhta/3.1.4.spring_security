@@ -1,6 +1,8 @@
 package web.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
@@ -10,7 +12,6 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/admin")
 public class RestAdminController {
 
     private final UserService userService;
@@ -20,36 +21,44 @@ public class RestAdminController {
     }
 
 
-    @GetMapping("/getAllUsers")
-    public List<User> getAllUsers() {
-        // все юзеры
-        return userService.getAllUsers();
+    @GetMapping("/admin/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
-    @GetMapping("/getUserById/{id}")
-    public User getUserById(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(userService.getUserById(id));
     }
 
-    @GetMapping("/showUserByUsername")
-    public User showUserByUsername(Principal principal) {
-        return userService.getUserByName(principal.getName());
+    @GetMapping("/admin/user")
+    public ResponseEntity<User> showAdminByUsername(Principal principal) {
+        User user = userService.getUserByName(principal.getName());
+        return ResponseEntity.ok().body(user);
     }
 
-    @PostMapping("/create")
-    public void create(@RequestBody User user) {
+    @GetMapping("/user/user")
+    public ResponseEntity<User> showUserByUsername(Principal principal) {
+        User user = userService.getUserByName(principal.getName());
+        return ResponseEntity.ok().body(user);
+    }
+
+    @PostMapping("/admin/add")
+    public ResponseEntity<User> create(@RequestBody User user) {
         userService.save(user);
+        return ResponseEntity.ok().body(user);
     }
 
 
-    @PutMapping("/update")
-    public User update(@RequestBody User user) {
+    @PutMapping("/admin/update")
+    public ResponseEntity<User> update(@RequestBody User user) {
         userService.update(user);
-        return user;
+        return ResponseEntity.ok().body(user);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
