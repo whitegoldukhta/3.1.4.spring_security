@@ -24,5 +24,6 @@ public interface UserService {
     Role getRoleById(Long id);
 
     List<Role> findAllRoles();
+
 }
 

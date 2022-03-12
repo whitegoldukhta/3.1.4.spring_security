@@ -1,14 +1,20 @@
 package web.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import web.model.User;
+import web.service.UserDetailsServiceImpl;
 import web.service.UserService;
+import web.service.UserServiceImpl;
 
 import java.security.Principal;
 
-@Controller
+@RestController
+@RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
 
@@ -16,19 +22,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/admin")
-    public String showAllUsers(Model model,Principal principal) {
-        model.addAttribute("currentUser", userService.getUserByName(principal.getName()));
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("newUser", new User());
-        model.addAttribute("allRoles", userService.findAllRoles());
-        return "admin";
+    @GetMapping
+    private User viewUser(@AuthenticationPrincipal UserService user) {
+        return user.getUser();
     }
 
-
-    @GetMapping("/user")
-    public String showUserPage(Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByName(principal.getName()));
-        return "user";
-    }
 }

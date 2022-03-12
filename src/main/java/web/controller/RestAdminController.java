@@ -1,7 +1,6 @@
 package web.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
@@ -33,7 +32,7 @@ public class RestAdminController {
     }
 
     @GetMapping("/showUserByUsername")
-    public User showUserByUsername(Principal principal){
+    public User showUserByUsername(Principal principal) {
         return userService.getUserByName(principal.getName());
     }
 

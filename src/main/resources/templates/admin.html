@@ -16,10 +16,7 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" style="color: white">
                 <div class="navbar-brand">
-                    <span class="font-weight-bold" th:text="${currentUser.username} + ' '"></span>
-                    with roles:
-                    <span th:each="role : ${currentUser.getRoles()}"
-                          th:text="${#strings.replace(role.getRole(), 'ROLE_', ' ')} + ' '"></span>
+                    <span class="font-weight-bold" th:text="${#authentication.name} + ' with roles: ' + ${#authentication.authorities}"></span>
                 </div>
             </li>
         </ul>

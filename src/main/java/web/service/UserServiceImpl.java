@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+@Transactional
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -44,14 +44,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-        userRepository.getUserByName(user.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
 
     @Override
-
     public List<Role> findAllRoles() {
         return rolesRepository.findAll();
     }
@@ -68,7 +66,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void setRolesToUser(User user, Long[] roles) {
         Set<Role> roleList = new HashSet<>();
         for (Long id : roles) {

@@ -8,7 +8,7 @@ import web.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("select u from User u where u.username = ?1")
+    @Query("SELECT p FROM User p JOIN FETCH p.roles WHERE p.username = (:username)")
     User getUserByName(String username);
 
     @Query("select u from User u where u.id = ?1")
