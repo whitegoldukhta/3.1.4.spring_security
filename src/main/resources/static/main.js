@@ -112,7 +112,10 @@ function newUserForm(e){
             document.getElementById("newUserForm").reset();
         })
 }
-
+async function getUser(id){
+    let response = await fetch(url + '/' + id);
+    return await response.json();
+}
 //------------------EDIT--------------------------------
 
 function butEdit() {
@@ -176,26 +179,4 @@ function reTable() {
     // }
     setTimeout(getUsers, 140)
 
-    //--------------User--------------
-    var url = "/api/user"
-
-    fetch(url)
-        .then((response) => {
-            let res = response.json();
-            return res;
-        })
-        .then((user) => {
-            console.log(user);
-            let roles = ""
-            user.roles.forEach((role)=>{roles = roles + role.role + ' '});
-            let tbody = document.getElementById('table_user');
-            let tr = document.createElement('tr');
-            tr.innerHTML = '<td>' + user.id + '</td>' +
-                '<td>' + user.username + '</td>' +
-                '<td>' + roles + '</td>' +
-                '<td>' + user.name + '</td>'+
-                '<td>' + user.lastName + '</td>' +
-                '<td>' + user.age + '</td>';
-            tbody.appendChild(tr);
-        })
 }
